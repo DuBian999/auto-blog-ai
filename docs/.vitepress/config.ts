@@ -6,6 +6,7 @@ export default defineConfig({
   title: "TechPulse - 科技脉搏",
   description: "科技脉搏 · 洞察未来",
   lang: "zh-CN",
+  base: "/auto-blog-ai/",
 
   // TailwindCSS v4 Vite 插件
   vite: {
@@ -71,7 +72,7 @@ export default defineConfig({
     ],
 
     editLink: {
-      pattern: "https://github.com/username/tech-blog/edit/main/docs/:path",
+      pattern: "https://github.com/DuBian999/auto-blog-ai/edit/main/docs/:path",
       text: "在 GitHub 上编辑此页",
     },
 
@@ -112,7 +113,7 @@ export default defineConfig({
 
   // Sitemap
   sitemap: {
-    hostname: "https://username.github.io",
+    hostname: "https://DuBian999.github.io",
   },
 
   // 最后更新时间
