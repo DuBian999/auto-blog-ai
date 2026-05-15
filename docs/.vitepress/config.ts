@@ -22,7 +22,6 @@ export default defineConfig({
     nav: [
       { text: "首页", link: "/" },
       { text: "前端资讯", link: "/blog/frontend" },
-      { text: "每日电影", link: "/blog/movies" },
       { text: "AI 新闻", link: "/blog/ai-news" },
       { text: "关于", link: "/about" },
     ],
@@ -32,12 +31,6 @@ export default defineConfig({
         {
           text: "前端资讯",
           link: "/blog/frontend",
-        },
-      ],
-      "/blog/movies": [
-        {
-          text: "每日电影",
-          link: "/blog/movies",
         },
       ],
       "/blog/ai-news": [
@@ -54,11 +47,10 @@ export default defineConfig({
       postsPath: "blog/posts",
       authorsPath: "blog/authors",
       title: "博客",
-      description: "前端资讯 · 每日电影 · AI 前沿",
+      description: "前端资讯 · AI 前沿",
       defaultAuthor: "tech-bot",
       categoryIcons: {
         frontend: "i-[carbon--code]",
-        movies: "i-[carbon--video]",
         "ai-news": "i-[carbon--machine-learning-model]",
       },
       tagIcons: {
@@ -67,7 +59,6 @@ export default defineConfig({
         typescript: "i-[logos--typescript-icon]",
         javascript: "i-[logos--javascript]",
         ai: "i-[carbon--machine-learning-model]",
-        movie: "i-[carbon--video]",
       },
       dateConfig: {
         format: "yyyy/MM/dd",

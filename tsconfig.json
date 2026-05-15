@@ -8,6 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "types": ["node"],
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["ES2022", "DOM", "DOM.Iterable"]

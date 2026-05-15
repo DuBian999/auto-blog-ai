@@ -36,7 +36,9 @@ jobs:
       - name: Run daily crawl
         run: pnpm crawl
         env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
 
       - name: Check for changes
         id: check_changes
