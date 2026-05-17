@@ -8,7 +8,7 @@ async function fetchSubreddit(
   const url = `https://www.reddit.com/r/${subreddit}/${sort}.json?limit=15`;
   try {
     const res = await fetch(url, {
-      headers: { "User-Agent": "TechPulse-Blog/1.0 (automated content curation)" },
+      headers: { "User-Agent": "BLEACH-X-Blog/1.0 (automated content curation)" },
     });
     if (!res.ok) {
       console.warn(`  ⚠️ r/${subreddit} 返回 ${res.status}`);

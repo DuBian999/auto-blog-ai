@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   crawl:
@@ -53,7 +54,14 @@ jobs:
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "tech-bot@users.noreply.github.com"
-          git config --local user.name "TechPulse Bot"
+          git config --local user.name "BLEACH-X Bot"
           git add docs/
           git commit -m "📰 Daily content update - $(date +%Y-%m-%d)"
           git push
+
+      - name: Trigger deploy
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          gh workflow run "Deploy VitePress site to Pages" --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ github.token }}

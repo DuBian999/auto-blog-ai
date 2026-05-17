@@ -24,7 +24,7 @@ interface TaskResult {
 
 async function run(): Promise<void> {
   console.log("=".repeat(50));
-  console.log(`🚀 TechPulse 每日内容更新 — ${today}`);
+  console.log(`🚀 BLEACH-X 每日内容更新 — ${today}`);
   console.log("=".repeat(50));
 
   const results: TaskResult[] = [];

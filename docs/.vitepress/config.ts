@@ -3,8 +3,8 @@ import { processData } from "@chunge16/vitepress-blogs-theme/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  title: "TechPulse - 科技脉搏",
-  description: "科技脉搏 · 洞察未来",
+  title: "BLEACH-X-AI-BLOG",
+  description: "科技咨询 · 洞察未来",
   lang: "zh-CN",
   base: "/auto-blog-ai/",
 
@@ -78,7 +78,7 @@ export default defineConfig({
 
     footer: {
       message: "基于 VitePress 构建",
-      copyright: "Copyright 2026 TechPulse",
+      copyright: "Copyright 2026 BLEACH-X",
     },
 
     docFooter: {

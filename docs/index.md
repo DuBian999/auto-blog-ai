@@ -1,11 +1,11 @@
 ---
 layout: home
-title: TechPulse - 科技脉搏
+title: BLEACH-X-AI-BLOG
 titleTemplate: 科技博客
 
 hero:
-  name: "TechPulse"
-  text: "科技脉搏 · 洞察未来"
+  name: "BLEACH-X"
+  text: "科技咨询 · 洞察未来"
   tagline: 前端资讯 · AI 前沿
   actions:
     - theme: brand

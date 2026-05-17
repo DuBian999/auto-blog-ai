@@ -1,5 +1,5 @@
 ---
-name: TechPulse Bot
+name: BLEACH-X Bot
 avatar: /favicon.svg
-description: TechPulse 博客的自动内容策展机器人。
+description: BLEACH-X 博客的自动内容策展机器人。
 ---
