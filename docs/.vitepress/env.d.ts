@@ -7,25 +7,48 @@ declare module "*.vue" {
 }
 
 declare module "@chunge16/vitepress-blogs-theme" {
-  import type { Component } from "vue";
-  interface VPBLooseTheme {
-    extends?: VPBLooseTheme;
-    Layout?: Component;
-    enhanceApp?: (ctx: { app: { component: (name: string, component: unknown) => void } }) => void;
+  interface Post {
+    url: string;
+    title: string;
+    excerpt?: string;
+    author: string;
+    category: string;
+    tags: string[];
+    date: {
+      raw: string;
+      time: number;
+      formatted: string;
+      since: string;
+    };
+    top?: boolean;
+    sticky?: number;
   }
-  export const VPBTheme: VPBLooseTheme;
-  export const VPBHome: Component;
-  export const VPBArchives: Component;
-  export const VPBTags: Component;
+
+  export function usePosts(): {
+    posts: Post[];
+    post: import("vue").Ref<Post | null>;
+    nextPost: import("vue").Ref<Post | null>;
+    prevPost: import("vue").Ref<Post | null>;
+    path: import("vue").Ref<string>;
+  };
+
+  const VPBTheme: Record<string, unknown>;
+  const VPBHome: import("vue").Component;
+  const VPBArchives: import("vue").Component;
+  const VPBTags: import("vue").Component;
+  export { VPBTheme, VPBHome, VPBArchives, VPBTags };
 }
 
 declare module "@chunge16/vitepress-blogs-theme/config" {
-  export function processData(pageData: Record<string, unknown>, ctx: Record<string, unknown>): Promise<void>;
+  export function processData(
+    pageData: Record<string, unknown>,
+    ctx: Record<string, unknown>
+  ): Promise<void>;
 }
 
 declare module "vitepress" {
-  // TS 6.0 兼容：补全 VitePress 中 declare function 未正确重导出的类型
-  // 使用宽松类型避免循环引用
   export function defineConfig(config: Record<string, unknown>): Record<string, unknown>;
+  export function useRoute(): import("vue-router").RouteLocationNormalizedLoaded;
+  export function withBase(path: string): string;
   export type { Theme } from "vitepress/client";
 }

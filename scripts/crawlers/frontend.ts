@@ -95,7 +95,7 @@ ${item.summary}
 `;
   });
 
-  const content = `# 今日前端资讯 — ${date}
+  const content = `# 前端资讯 — ${date}
 
 > 每天 5 条最值得前端开发者关注的技术动态。
 
@@ -110,7 +110,7 @@ ${contentSections.join("\n---\n\n")}
 `;
 
   const post: BlogPost = {
-    title: `今日前端资讯 — ${date}`,
+    title: `前端资讯 — ${date}`,
     date,
     category: "frontend",
     tags: [...allTags].slice(0, 6),

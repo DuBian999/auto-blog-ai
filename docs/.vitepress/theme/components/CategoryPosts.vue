@@ -1,14 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { usePosts } from "@chunge16/vitepress-blogs-theme";
-import { useRoute, withBase } from "vitepress";
+import { withBase } from "vitepress";
 
 const props = defineProps({
   category: { type: String, required: true },
 });
 
 const { posts: allPosts } = usePosts();
-const route = useRoute();
 
 const PAGE_SIZE = 10;
 
@@ -17,7 +16,10 @@ const posts = computed(() =>
 );
 
 const currentPage = computed(() => {
-  const p = parseInt(route.query?.page, 10);
+  const p = parseInt(
+    new URLSearchParams(window.location.search).get("page") || "",
+    10
+  );
   return p > 0 ? p : 1;
 });
 
@@ -28,16 +30,16 @@ const pagedPosts = computed(() => {
   return posts.value.slice(start, start + PAGE_SIZE);
 });
 
-const pageUrl = (page) => {
-  const q = new URLSearchParams(route.query ?? {});
+function goPage(page: number) {
+  const q = new URLSearchParams(window.location.search);
   if (page <= 1) {
     q.delete("page");
   } else {
     q.set("page", String(page));
   }
   const qs = q.toString();
-  return withBase(route.path + (qs ? "?" + qs : ""));
-};
+  window.location.search = qs ? "?" + qs : "";
+}
 
 const visiblePages = computed(() => {
   const pages = [];
@@ -76,7 +78,7 @@ const visiblePages = computed(() => {
     <nav v-if="totalPages > 1" class="cp-pagination">
       <a
         v-if="currentPage > 1"
-        :href="pageUrl(currentPage - 1)"
+        @click.prevent="goPage(currentPage - 1)"
         class="cp-page-btn"
       >← 上一页</a>
       <span v-else class="cp-page-btn disabled">← 上一页</span>
@@ -84,13 +86,13 @@ const visiblePages = computed(() => {
       <a
         v-for="p of visiblePages"
         :key="p"
-        :href="pageUrl(p)"
+        @click.prevent="goPage(p)"
         :class="['cp-page-num', { active: p === currentPage }]"
       >{{ p }}</a>
 
       <a
         v-if="currentPage < totalPages"
-        :href="pageUrl(currentPage + 1)"
+        @click.prevent="goPage(currentPage + 1)"
         class="cp-page-btn"
       >下一页 →</a>
       <span v-else class="cp-page-btn disabled">下一页 →</span>
