@@ -15,13 +15,16 @@ const posts = computed(() =>
   allPosts.filter((p) => p.category === props.category)
 );
 
-const currentPage = computed(() => {
+function getPageFromURL(): number {
+  if (typeof window === "undefined") return 1;
   const p = parseInt(
     new URLSearchParams(window.location.search).get("page") || "",
     10
   );
   return p > 0 ? p : 1;
-});
+}
+
+const currentPage = computed(() => getPageFromURL());
 
 const totalPages = computed(() => Math.ceil(posts.value.length / PAGE_SIZE));
 
