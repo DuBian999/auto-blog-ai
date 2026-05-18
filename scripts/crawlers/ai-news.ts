@@ -67,7 +67,10 @@ export async function crawlAINews(date: string): Promise<BlogPost> {
     }));
   }
 
-  // 2.5 验证策展链接
+  // 2.5 过滤空 URL（LLM 可能返回缺失链接的条目）
+  curatedItems = curatedItems.filter((item) => item.url && item.url.trim().length > 0);
+
+  // 2.6 验证策展链接
   console.log("  🔗 验证策展链接...");
   const { valid, broken } = await verifyCuratedUrls(curatedItems);
   if (broken.length > 0) {
@@ -115,7 +118,7 @@ ${item.summary}
 
   const content = `# AI 新闻速览 — ${date}
 
-> 每天 5 条最值得 AI 从业者关注的前沿动态。
+> 每天从多个平台自动筛选 AI 前沿动态，由 AI 辅助摘要与点评。
 
 ${contentSections.join("\n---\n\n")}
 

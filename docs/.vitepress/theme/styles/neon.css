@@ -18,7 +18,7 @@
   --tp-glow-cyan: 0 0 15px rgba(0, 255, 255, 0.3);
   --tp-glow-purple: 0 0 15px rgba(139, 92, 246, 0.3);
 
-  /* ---- 博客主题品牌色（@chunge16/vitepress-blogs-theme 使用）---- */
+  /* ---- 博客主题品牌色 ---- */
   --vp-c-brand: #0e7490;
   --vp-c-brand-light: #0e7490;
   --vp-c-brand-dark: #0891b2;

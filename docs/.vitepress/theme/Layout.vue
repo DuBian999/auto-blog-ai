@@ -2,12 +2,9 @@
 import { useData, inBrowser } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import { watchEffect } from "vue";
-import {
-  VPBLayoutPostTop,
-  VPBLayoutPostAsideTop,
-  VPBLayoutAuthorTop,
-  VPBLayoutAuthorAsideBottom,
-} from "@chunge16/vitepress-blogs-theme";
+import PostAsideTop from "./components/PostAsideTop.vue";
+import AuthorHeader from "./components/AuthorHeader.vue";
+import AuthorAsideBottom from "./components/AuthorAsideBottom.vue";
 import AsidePostBottom from "./components/AsidePostBottom.vue";
 
 const { Layout } = DefaultTheme;
@@ -23,15 +20,14 @@ watchEffect(() => {
 <template>
   <Layout>
     <template #doc-before>
-      <VPBLayoutPostTop v-if="frontmatter.blog === 'post'" />
-      <VPBLayoutAuthorTop v-if="frontmatter.blog === 'author'" />
+      <AuthorHeader v-if="frontmatter.blog === 'author'" />
     </template>
     <template #aside-top>
-      <VPBLayoutPostAsideTop v-if="frontmatter.blog === 'post'" />
+      <PostAsideTop v-if="frontmatter.blog === 'post'" />
     </template>
     <template #aside-bottom>
       <AsidePostBottom v-if="frontmatter.blog === 'post'" />
-      <VPBLayoutAuthorAsideBottom v-if="frontmatter.blog === 'author'" />
+      <AuthorAsideBottom v-if="frontmatter.blog === 'author'" />
     </template>
   </Layout>
 </template>

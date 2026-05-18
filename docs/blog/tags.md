@@ -3,4 +3,4 @@ title: Tags
 layout: page
 ---
 
-<VPBTags />
+<BlogTags />

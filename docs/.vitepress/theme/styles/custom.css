@@ -3,17 +3,14 @@
    ============================================ */
 
 /* ---- 导航栏 ---- */
-.VPNavBar {
+.VPNav {
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
 }
 
 .dark .VPNav {
-  border-bottom: 1px solid rgba(0, 255, 255, 0.06);
-}
-
-.dark .VPNavBar {
   background: rgba(10, 10, 20, 0.85) !important;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.06);
 }
 
 .VPNav .title {
@@ -77,6 +74,10 @@
 
 .VPDocAsideOutline .outline-marker {
   display: none;
+}
+
+.VPDocAsideOutline.has-outline .content {
+  border-left: none;
 }
 
 .VPDocAsideOutline .outline-link {

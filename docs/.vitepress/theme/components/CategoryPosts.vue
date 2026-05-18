@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { usePosts } from "@chunge16/vitepress-blogs-theme";
+import { usePosts } from "../composables/usePosts";
 import { withBase } from "vitepress";
 
 const props = defineProps({

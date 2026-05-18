@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-基于 VitePress + `@chunge16/vitepress-blogs-theme` 的自动化科技博客。每日定时从多个平台抓取前端/AI 资讯，经 LLM 策展后生成 Markdown 文章，自动部署到 GitHub Pages。
+基于 VitePress 自定义主题的自动化科技博客。每日定时从多个平台抓取前端/AI 资讯，经 LLM 策展后生成 Markdown 文章，自动部署到 GitHub Pages。
 
 ## 核心命令
 

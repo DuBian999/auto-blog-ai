@@ -1,6 +1,6 @@
 <script setup>
 import { useData, withBase } from "vitepress";
-import { usePosts } from "@chunge16/vitepress-blogs-theme";
+import { usePosts } from "../composables/usePosts";
 
 const { site } = useData();
 const { nextPost, prevPost } = usePosts();

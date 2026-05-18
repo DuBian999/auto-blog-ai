@@ -1,20 +1,21 @@
 import type { Theme } from "vitepress";
-import { VPBTheme, VPBHome, VPBArchives, VPBTags } from "@chunge16/vitepress-blogs-theme";
+import DefaultTheme from "vitepress/theme";
 import Layout from "./Layout.vue";
-import CategoryPosts from "./components/CategoryPosts.vue";
 import BlogHome from "./components/BlogHome.vue";
+import CategoryPosts from "./components/CategoryPosts.vue";
+import BlogArchives from "./components/BlogArchives.vue";
+import BlogTags from "./components/BlogTags.vue";
 import "./styles/neon.css";
 import "./styles/custom.css";
 
 const theme: Theme = {
-  extends: VPBTheme,
+  extends: DefaultTheme,
   Layout,
   enhanceApp({ app }) {
-    app.component("VPBHome", VPBHome);
-    app.component("VPBArchives", VPBArchives);
-    app.component("VPBTags", VPBTags);
-    app.component("CategoryPosts", CategoryPosts);
     app.component("BlogHome", BlogHome);
+    app.component("CategoryPosts", CategoryPosts);
+    app.component("BlogArchives", BlogArchives);
+    app.component("BlogTags", BlogTags);
   },
 };
 

@@ -64,7 +64,10 @@ export async function crawlFrontend(date: string): Promise<BlogPost> {
     }));
   }
 
-  // 2.5 验证策展链接
+  // 2.5 过滤空 URL（LLM 可能返回缺失链接的条目）
+  curatedItems = curatedItems.filter((item) => item.url && item.url.trim().length > 0);
+
+  // 2.6 验证策展链接
   console.log("  🔗 验证策展链接...");
   const { valid, broken } = await verifyCuratedUrls(curatedItems);
   if (broken.length > 0) {
@@ -112,7 +115,7 @@ ${item.summary}
 
   const content = `# 前端资讯 — ${date}
 
-> 每天 5 条最值得前端开发者关注的技术动态。
+> 每天从多个平台自动筛选前端技术动态，由 AI 辅助摘要与点评。
 
 ${contentSections.join("\n---\n\n")}
 

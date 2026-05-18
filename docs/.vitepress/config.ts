@@ -1,5 +1,4 @@
 import { defineConfig } from "vitepress";
-import { processData } from "@chunge16/vitepress-blogs-theme/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
@@ -11,12 +10,8 @@ export default defineConfig({
   // TailwindCSS v4 Vite 插件
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["@chunge16/vitepress-blogs-theme"],
-    },
-    ssr: {
-      noExternal: ["@chunge16/vitepress-blogs-theme"],
-    },
+    optimizeDeps: {},
+    ssr: {},
   },
 
   themeConfig: {
@@ -106,9 +101,20 @@ export default defineConfig({
     darkModeSwitchTitle: "切换到深色模式",
   },
 
-  // 处理博客文章数据
-  async transformPageData(pageData: Record<string, unknown>, ctx: Record<string, unknown>): Promise<void> {
-    await processData(pageData, ctx);
+  // 标记博客文章/作者页面的 frontmatter
+  transformPageData(pageData: Record<string, unknown>): void {
+    const path = pageData.relativePath as string;
+    const postsPath = "blog/posts";
+    const authorsPath = "blog/authors";
+    if (path.includes(postsPath)) {
+      (pageData.frontmatter as Record<string, unknown>).blog = "post";
+      (pageData.frontmatter as Record<string, unknown>).aside = "left";
+      (pageData.frontmatter as Record<string, unknown>).sidebar = false;
+    } else if (path.includes(authorsPath)) {
+      (pageData.frontmatter as Record<string, unknown>).blog = "author";
+      (pageData.frontmatter as Record<string, unknown>).aside = "left";
+      (pageData.frontmatter as Record<string, unknown>).sidebar = false;
+    }
   },
 
   // Sitemap

@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { usePosts } from "@chunge16/vitepress-blogs-theme";
+import { usePosts } from "../composables/usePosts";
 import { useData, useRoute, withBase } from "vitepress";
 
 const { posts } = usePosts();
