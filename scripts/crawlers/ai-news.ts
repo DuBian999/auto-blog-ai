@@ -109,8 +109,7 @@ ${contentSections.join("\n---\n\n")}
 ---
 
 ::: tip 关于本栏目
-「AI 新闻」每日自动从 Hacker News、Reddit、ArXiv 等平台筛选最值得关注的 AI 前沿动态，由 AI 辅助摘要和点评。
-[查看历史文章](/blog/ai-news)
+关于本栏目：每日自动从 Hacker News、Reddit、ArXiv 等平台中筛选热门 AI 前沿动态，由 AI 辅助摘要与点评。请注意甄别信息真实性。
 :::
 `;
 
