@@ -4,6 +4,7 @@
  */
 import * as fs from "fs";
 import * as path from "path";
+import { checkUrl } from "./utils/link-checker";
 
 const DIRS = ["docs/blog/posts/frontend", "docs/blog/posts/ai-news"];
 const TIMEOUT_MS = 12000;
@@ -18,41 +19,6 @@ interface FileResult {
   file: string;
   sections: Section[];
   brokenIndices: number[];
-}
-
-/** 检查单个 URL */
-async function checkUrl(url: string): Promise<boolean> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-  try {
-    const res = await fetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-      headers: { "User-Agent": "BLEACH-X-LinkChecker/1.0" },
-    });
-    clearTimeout(timer);
-    if (res.ok) return true;
-    if (res.status === 405 || res.status === 403) {
-      const c2 = new AbortController();
-      const t2 = setTimeout(() => c2.abort(), TIMEOUT_MS);
-      try {
-        const r2 = await fetch(url, {
-          method: "GET",
-          signal: c2.signal,
-          headers: { "User-Agent": "BLEACH-X-LinkChecker/1.0" },
-        });
-        clearTimeout(t2);
-        return r2.ok;
-      } catch {
-        clearTimeout(t2);
-        return false;
-      }
-    }
-    return false;
-  } catch {
-    clearTimeout(timer);
-    return false;
-  }
 }
 
 /** 解析文章的 5 个 section */

@@ -5,6 +5,7 @@ import { fetchFrontendReddit } from "../sources/reddit";
 import { fetchOfficialBlogs } from "../sources/official-blogs";
 import { curateNews, isLLMConfigured } from "../utils/llm";
 import { writeBlogPost } from "../utils/markdown";
+import { verifyCuratedUrls } from "../utils/link-checker";
 
 /** 将原始数据去重合并并按热度排序 */
 function mergeAndSort(...sources: RawNewsItem[][]): RawNewsItem[] {
@@ -61,6 +62,18 @@ export async function crawlFrontend(date: string): Promise<BlogPost> {
       summary: item.summary,
       reason: "热度最高",
     }));
+  }
+
+  // 2.5 验证策展链接
+  console.log("  🔗 验证策展链接...");
+  const { valid, broken } = await verifyCuratedUrls(curatedItems);
+  if (broken.length > 0) {
+    console.log(`  ⚠️ ${broken.length} 个链接失效，已剔除:`);
+    broken.forEach((item) => console.log(`     ❌ ${item.url}`));
+  }
+  curatedItems = valid;
+  if (curatedItems.length === 0) {
+    throw new Error("所有策展链接均失效");
   }
 
   // 3. 收集所有出现的标签

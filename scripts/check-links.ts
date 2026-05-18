@@ -4,6 +4,7 @@
  */
 import * as fs from "fs";
 import * as path from "path";
+import { checkUrl as isUrlReachable } from "./utils/link-checker";
 
 const TIMEOUT_MS = 12000;
 const CONCURRENCY = 8;
@@ -37,44 +38,13 @@ function extractLinks(): LinkEntry[] {
   return entries;
 }
 
-/** 检测单个 URL */
+/** 检测单个 URL（包装共享 checkUrl，返回详细状态） */
 async function checkUrl(url: string): Promise<{ status: number | string; ok: boolean }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
   try {
-    // 先尝试 HEAD
-    let res = await fetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-      headers: { "User-Agent": "BLEACH-X-LinkChecker/1.0" },
-    });
-    clearTimeout(timer);
-
-    if (res.ok) return { status: res.status, ok: true };
-    if (res.status === 405 || res.status === 403) {
-      // HEAD 不被允许，尝试 GET
-      const c2 = new AbortController();
-      const t2 = setTimeout(() => c2.abort(), TIMEOUT_MS);
-      try {
-        res = await fetch(url, {
-          method: "GET",
-          signal: c2.signal,
-          headers: { "User-Agent": "BLEACH-X-LinkChecker/1.0" },
-        });
-        clearTimeout(t2);
-        return { status: res.status, ok: res.ok };
-      } catch {
-        clearTimeout(t2);
-        return { status: "timeout", ok: false };
-      }
-    }
-    return { status: res.status, ok: false };
-  } catch (err) {
-    clearTimeout(timer);
-    const msg = err instanceof Error ? err.message : String(err);
-    if (msg.includes("abort")) return { status: "timeout", ok: false };
-    return { status: msg.slice(0, 40), ok: false };
+    const ok = await isUrlReachable(url, TIMEOUT_MS);
+    return ok ? { status: 200, ok: true } : { status: "unreachable", ok: false };
+  } catch {
+    return { status: "error", ok: false };
   }
 }
 

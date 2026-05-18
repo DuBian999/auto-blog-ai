@@ -4,6 +4,7 @@ import { fetchAIReddit } from "../sources/reddit";
 import { fetchArxivPapers } from "../sources/arxiv";
 import { curateNews, isLLMConfigured } from "../utils/llm";
 import { writeBlogPost } from "../utils/markdown";
+import { verifyCuratedUrls } from "../utils/link-checker";
 
 const AI_KEYWORDS = [
   "ai", "llm", "gpt", "claude", "openai", "anthropic", "deepseek",
@@ -64,6 +65,18 @@ export async function crawlAINews(date: string): Promise<BlogPost> {
       summary: item.summary,
       reason: "热度最高",
     }));
+  }
+
+  // 2.5 验证策展链接
+  console.log("  🔗 验证策展链接...");
+  const { valid, broken } = await verifyCuratedUrls(curatedItems);
+  if (broken.length > 0) {
+    console.log(`  ⚠️ ${broken.length} 个链接失效，已剔除:`);
+    broken.forEach((item) => console.log(`     ❌ ${item.url}`));
+  }
+  curatedItems = valid;
+  if (curatedItems.length === 0) {
+    throw new Error("所有策展链接均失效");
   }
 
   // 3. 提取标签
