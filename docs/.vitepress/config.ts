@@ -42,6 +42,11 @@ export default defineConfig({
       ],
     },
 
+    // 搜索配置
+    search: {
+      provider: "local",
+    },
+
     // 博客主题配置
     blog: {
       path: "/blog",
@@ -104,11 +109,6 @@ export default defineConfig({
   // 处理博客文章数据
   async transformPageData(pageData: Record<string, unknown>, ctx: Record<string, unknown>): Promise<void> {
     await processData(pageData, ctx);
-  },
-
-  // 搜索配置
-  search: {
-    provider: "local",
   },
 
   // Sitemap

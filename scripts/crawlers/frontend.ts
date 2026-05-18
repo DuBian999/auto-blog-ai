@@ -2,6 +2,7 @@ import type { BlogPost, RawNewsItem } from "../types";
 import { fetchHNTopStories } from "../sources/hacker-news";
 import { fetchDevToMultiTag } from "../sources/devto";
 import { fetchFrontendReddit } from "../sources/reddit";
+import { fetchOfficialBlogs } from "../sources/official-blogs";
 import { curateNews, isLLMConfigured } from "../utils/llm";
 import { writeBlogPost } from "../utils/markdown";
 
@@ -25,13 +26,14 @@ export async function crawlFrontend(date: string): Promise<BlogPost> {
   console.log("\n📰 开始抓取前端资讯...");
 
   // 1. 从多个数据源获取原始内容
-  const [hnArticles, devtoArticles, redditArticles] = await Promise.all([
+  const [hnArticles, devtoArticles, redditArticles, officialArticles] = await Promise.all([
     fetchHNTopStories(),
     fetchDevToMultiTag(["frontend", "react", "vue", "javascript", "typescript", "css"]),
     fetchFrontendReddit(),
+    fetchOfficialBlogs(),
   ]);
 
-  const allArticles = mergeAndSort(hnArticles, devtoArticles, redditArticles);
+  const allArticles = mergeAndSort(hnArticles, devtoArticles, redditArticles, officialArticles);
   console.log(`  共获取 ${allArticles.length} 篇去重后文章`);
 
   if (allArticles.length === 0) {
@@ -104,7 +106,7 @@ ${contentSections.join("\n---\n\n")}
 ---
 
 ::: tip 关于本栏目
-「前端资讯」每日自动从 Hacker News、Dev.to、Reddit 等平台筛选最值得关注的前端技术动态，由 AI 辅助摘要和点评。
+「前端资讯」每日自动从 React、TypeScript、Vue 等官方博客及 Hacker News、Dev.to、Reddit 等社区平台筛选最值得关注的前端技术动态，由 AI 辅助摘要和点评。
 [查看历史文章](/blog/frontend)
 :::
 `;
