@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { usePosts } from "../composables/usePosts";
 import { useData, useRoute, withBase } from "vitepress";
@@ -10,7 +10,7 @@ const route = useRoute();
 const PAGE_SIZE = 10;
 
 const currentPage = computed(() => {
-  const p = parseInt(route.query?.page, 10);
+  const p = parseInt((route as any).query?.page, 10);
   return p > 0 ? p : 1;
 });
 
@@ -21,8 +21,8 @@ const pagedPosts = computed(() => {
   return posts.slice(start, start + PAGE_SIZE);
 });
 
-const pageUrl = (page) => {
-  const q = new URLSearchParams(route.query ?? {});
+const pageUrl = (page: number) => {
+  const q = new URLSearchParams((route as any).query ?? {});
   if (page <= 1) {
     q.delete("page");
   } else {
@@ -46,17 +46,17 @@ const visiblePages = computed(() => {
   return pages;
 });
 
-const categoryLabel = (cat) => {
-  const map = { frontend: "前端", movies: "电影", "ai-news": "AI" };
+const categoryLabel = (cat: string) => {
+  const map: Record<string, string> = { frontend: "前端", movies: "电影", "ai-news": "AI" };
   return map[cat?.toLowerCase()] ?? cat;
 };
 
-const categoryBadgeClass = (cat) => {
-  const map = { frontend: "cat-frontend", movies: "cat-movies", "ai-news": "cat-ai" };
+const categoryBadgeClass = (cat: string) => {
+  const map: Record<string, string> = { frontend: "cat-frontend", movies: "cat-movies", "ai-news": "cat-ai" };
   return map[cat?.toLowerCase()] ?? "";
 };
 
-const stripHtml = (html) => {
+const stripHtml = (html: string | undefined) => {
   return html?.replace(/<[^>]*>/g, "") ?? "";
 };
 </script>

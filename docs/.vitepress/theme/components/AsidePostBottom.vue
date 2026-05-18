@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { useData, withBase } from "vitepress";
 import { usePosts } from "../composables/usePosts";
 
 const { site } = useData();
 const { nextPost, prevPost } = usePosts();
 const theme = site.value.themeConfig;
-const blogPath = theme.blog?.path ?? "/blog/";
+const blogPath =theme.blog?.path ?? "/blog/";
 </script>
 
 <template>

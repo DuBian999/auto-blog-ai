@@ -2,7 +2,7 @@
 import { withBase, useData } from "vitepress";
 
 const { theme } = useData();
-const blogPath = theme.blog?.path ?? "/blog/";
+const blogPath = (theme as any).blog?.path ?? "/blog/";
 </script>
 
 <template>

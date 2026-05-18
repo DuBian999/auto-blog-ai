@@ -6,9 +6,9 @@ import { withBase, useData } from "vitepress";
 const { post } = usePosts();
 const { theme } = useData();
 
-const categoryIcons = computed(() => theme.blog?.categoryIcons ?? {});
-const tagIcons = computed(() => theme.blog?.tagIcons ?? {});
-const tagsPath = computed(() => theme.blog?.tagsPath ?? "/blog/tags");
+const categoryIcons = computed(() => (theme as any).blog?.categoryIcons ?? {});
+const tagIcons = computed(() => (theme as any).blog?.tagIcons ?? {});
+const tagsPath = computed(() => (theme as any).blog?.tagsPath ?? "/blog/tags");
 
 const categoryLabel = computed(() => {
   const map: Record<string, string> = { frontend: "前端", "ai-news": "AI" };
@@ -79,7 +79,9 @@ const categoryLabel = computed(() => {
   border: 1px solid var(--vp-c-divider);
   border-radius: 9999px;
   text-decoration: none;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pat-tag:hover {

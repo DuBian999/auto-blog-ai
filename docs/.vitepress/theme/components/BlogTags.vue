@@ -29,8 +29,8 @@ const filteredPosts = computed(() =>
   selectedTag.value ? postsByTag.value[selectedTag.value] ?? [] : [],
 );
 
-const tagIcons = computed(() => theme.blog?.tagIcons ?? {});
-const tagsPath = computed(() => theme.blog?.tagsPath ?? "/blog/tags");
+const tagIcons = computed(() => (theme as any).blog?.tagIcons ?? {});
+const tagsPath = computed(() => (theme as any).blog?.tagsPath ?? "/blog/tags");
 
 function selectTag(tag: string) {
   selectedTag.value = tag;

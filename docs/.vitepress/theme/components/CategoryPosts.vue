@@ -15,7 +15,7 @@ const posts = computed(() =>
   allPosts.filter((p) => p.category === props.category)
 );
 
-function getPageFromURL(): number {
+function getPageFromURL() {
   if (typeof window === "undefined") return 1;
   const p = parseInt(
     new URLSearchParams(window.location.search).get("page") || "",
@@ -83,7 +83,8 @@ const visiblePages = computed(() => {
         v-if="currentPage > 1"
         @click.prevent="goPage(currentPage - 1)"
         class="cp-page-btn"
-      >← 上一页</a>
+        >← 上一页</a
+      >
       <span v-else class="cp-page-btn disabled">← 上一页</span>
 
       <a
@@ -91,13 +92,15 @@ const visiblePages = computed(() => {
         :key="p"
         @click.prevent="goPage(p)"
         :class="['cp-page-num', { active: p === currentPage }]"
-      >{{ p }}</a>
+        >{{ p }}</a
+      >
 
       <a
         v-if="currentPage < totalPages"
         @click.prevent="goPage(currentPage + 1)"
         class="cp-page-btn"
-      >下一页 →</a>
+        >下一页 →</a
+      >
       <span v-else class="cp-page-btn disabled">下一页 →</span>
     </nav>
   </div>
@@ -126,7 +129,10 @@ const visiblePages = computed(() => {
   border-radius: 0 6px 6px 0;
   text-decoration: none;
   overflow: hidden;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .tech-post-card::before {
@@ -196,7 +202,9 @@ const visiblePages = computed(() => {
   border-top: 1.5px solid rgba(0, 255, 255, 0.2);
   rotate: 45deg;
   opacity: 0;
-  transition: opacity 0.25s ease, border-color 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .tech-post-card:hover .tech-post-arrow {

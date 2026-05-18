@@ -1,7 +1,12 @@
-import { defineConfig } from "vitepress";
+import { defineConfigWithTheme, type DefaultTheme, type PageData } from "vitepress";
 import tailwindcss from "@tailwindcss/vite";
+import type { BlogConfig } from "./theme/types";
 
-export default defineConfig({
+interface ThemeConfig extends DefaultTheme.Config {
+  blog?: BlogConfig
+}
+
+export default defineConfigWithTheme<ThemeConfig>({
   title: "BLEACH-X-AI-BLOG",
   description: "科技咨询 · 洞察未来",
   lang: "zh-CN",
@@ -102,7 +107,7 @@ export default defineConfig({
   },
 
   // 标记博客文章/作者页面的 frontmatter
-  transformPageData(pageData: Record<string, unknown>): void {
+  transformPageData(pageData: PageData): void {
     const path = pageData.relativePath as string;
     const postsPath = "blog/posts";
     const authorsPath = "blog/authors";

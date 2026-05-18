@@ -1,4 +1,4 @@
-import { createContentLoader } from "vitepress";
+import { createContentLoader, type ContentData } from "vitepress";
 
 export interface Post {
   url: string;
@@ -16,12 +16,15 @@ export interface Post {
   top?: boolean;
   sticky?: number;
 }
+export const data: Post[] = [];
 
 function formatDate(raw: string): Post["date"] {
   const d = new Date(raw);
   const time = d.getTime();
 
   const y = d.getFullYear();
+
+  
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   const formatted = `${y}/${m}/${day}`;
