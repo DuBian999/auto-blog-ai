@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-基于 VitePress 自定义主题的自动化科技博客。每日定时从多个平台抓取前端/AI 资讯，经 LLM 策展后生成 Markdown 文章，自动部署到 GitHub Pages。
+基于 VitePress 自定义主题的自动化科技博客。定时从多个平台抓取资讯（AI 新闻每日、前端资讯每 15 天），经 LLM 策展后生成 Markdown 文章，自动部署到 GitHub Pages。
 
 ## 核心命令
 
@@ -46,7 +46,7 @@ ArXiv ───────┘
 ```
 scripts/
 ├── types.ts                 # RawNewsItem, BlogPost, Category 等类型定义
-├── daily-task.ts            # 每日任务入口（串行执行两个 crawler）
+├── daily-task.ts            # 每日任务入口（AI 新闻每日；前端资讯每 15 天，通过对比 posts/frontend/ 下最新日期决定是否跳过）
 ├── check-links.ts           # 诊断脚本：扫描所有原文链接可用性
 ├── cleanup-broken-links.ts  # 清理脚本：删除失效链接/章节
 ├── sources/                 # 数据源适配器
@@ -68,6 +68,7 @@ scripts/
 
 - **触发时间**：每天 UTC 00:00（北京时间 08:00）
 - **工作流**：`.github/workflows/daily-crawl.yml` → `pnpm crawl` → commit & push → 触发 `.github/workflows/deploy.yml` → GitHub Pages
+- **抓取频率**：AI 新闻每日生成；前端资讯每 15 天生成一次（`daily-task.ts` 通过读取 `docs/blog/posts/frontend/` 下最新一篇的日期判断是否跳过，间隔常量 `FRONTEND_INTERVAL_DAYS`）
 - **LLM 配置**：通过 GitHub Secrets 传入 `LLM_API_KEY`、`LLM_BASE_URL`、`LLM_MODEL`
 
 ## 重要约定

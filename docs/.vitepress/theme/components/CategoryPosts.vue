@@ -1,32 +1,36 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted, shallowRef } from "vue";
 import { usePosts } from "../composables/usePosts";
 import { withBase } from "vitepress";
 
-const props = defineProps({
-  category: { type: String, required: true },
-});
+const props = defineProps<{
+  category: string;
+}>();
 
 const { posts: allPosts } = usePosts();
 
 const PAGE_SIZE = 10;
+// 必须以空字符串初始化，保证 SSG 产物与客户端首次渲染一致，避免 hydration mismatch
+// 真实 URL query 在 onMounted 中读取，并通过响应式触发 DOM 更新
+const currentSearch = shallowRef("");
 
 const posts = computed(() =>
   allPosts.filter((p) => p.category === props.category)
 );
 
-function getPageFromURL() {
-  if (typeof window === "undefined") return 1;
+const requestedPage = computed(() => {
   const p = parseInt(
-    new URLSearchParams(window.location.search).get("page") || "",
-    10
+    new URLSearchParams(currentSearch.value).get("page") || "",
+    10,
   );
   return p > 0 ? p : 1;
-}
-
-const currentPage = computed(() => getPageFromURL());
+});
 
 const totalPages = computed(() => Math.ceil(posts.value.length / PAGE_SIZE));
+
+const currentPage = computed(() =>
+  Math.min(requestedPage.value, Math.max(totalPages.value, 1)),
+);
 
 const pagedPosts = computed(() => {
   const start = (currentPage.value - 1) * PAGE_SIZE;
@@ -34,14 +38,23 @@ const pagedPosts = computed(() => {
 });
 
 function goPage(page: number) {
-  const q = new URLSearchParams(window.location.search);
+  if (typeof window === "undefined") return;
+  const q = new URLSearchParams(currentSearch.value);
   if (page <= 1) {
     q.delete("page");
   } else {
     q.set("page", String(page));
   }
   const qs = q.toString();
-  window.location.search = qs ? "?" + qs : "";
+  const url = new URL(window.location.href);
+  url.search = qs;
+  window.history.pushState({}, "", url);
+  currentSearch.value = url.search;
+  window.scrollTo(0, 0);
+}
+
+function syncSearchFromURL() {
+  currentSearch.value = window.location.search;
 }
 
 const visiblePages = computed(() => {
@@ -56,6 +69,15 @@ const visiblePages = computed(() => {
   }
   for (let i = start; i <= end; i++) pages.push(i);
   return pages;
+});
+
+onMounted(() => {
+  syncSearchFromURL();
+  window.addEventListener("popstate", syncSearchFromURL);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", syncSearchFromURL);
 });
 </script>
 

@@ -115,14 +115,14 @@ ${item.summary}
 
   const content = `# 前端资讯 — ${date}
 
-> 每天从多个平台自动筛选前端技术动态，由 AI 辅助摘要与点评。
+> 每 15 天从多个平台自动筛选前端技术动态，由 AI 辅助摘要与点评。
 
 ${contentSections.join("\n---\n\n")}
 
 ---
 
 ::: tip 关于本栏目
-关于本栏目：每日自动从 React、TypeScript、Vue 等官方博客及 Hacker News、Dev.to 等社区中筛选热门前端技术动态，由 AI 辅助摘要与点评。请注意甄别信息真实性。
+关于本栏目：每 15 天自动从 React、TypeScript、Vue 等官方博客及 Hacker News、Dev.to 等社区中筛选热门前端技术动态，由 AI 辅助摘要与点评。请注意甄别信息真实性。
 :::
 `;
 
