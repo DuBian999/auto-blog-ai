@@ -1,0 +1,72 @@
+/* ============================================================
+   Keep Mac 风代码块
+   —— 顶部 34px Mac 头 + 左侧三色圆点 + 右侧语言标签 + 大阴影
+      通过 ::before / ::after 无需改 VitePress DOM
+   ============================================================ */
+
+.vp-doc div[class*="language-"] {
+  position: relative;
+  padding-top: 34px !important;
+  border-radius: 8px;
+  border: 1px solid var(--keep-border);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  margin: 1.6rem 0;
+}
+
+.dark .vp-doc div[class*="language-"] {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Mac 头背景条 */
+.vp-doc div[class*="language-"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  background: var(--keep-bg-3);
+  border-bottom: 1px solid var(--keep-border);
+  z-index: 1;
+}
+
+.dark .vp-doc div[class*="language-"]::after {
+  background: #1a1e24;
+}
+
+/* 三色圆点：主圆点 + box-shadow 一次画黄绿两个 */
+.vp-doc div[class*="language-"]::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 14px;
+  width: 12px;
+  height: 12px;
+  background: #fc625d;
+  border-radius: 50%;
+  box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+  z-index: 2;
+}
+
+/* 语言标签移到 Mac 头右上 */
+.vp-doc div[class*="language-"] > span.lang {
+  top: 9px !important;
+  right: 16px !important;
+  opacity: 1 !important;
+  color: var(--keep-text-4);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--vp-font-family-mono);
+  z-index: 3;
+  transition: none;
+}
+
+/* copy 按钮下移到 Mac 头下方 */
+.vp-doc div[class*="language-"] > button.copy {
+  top: 44px !important;
+  right: 12px !important;
+  z-index: 3;
+}
+
+/* 代码块正文（pre）不需要单独调，padding-top 已经在容器上让出了空间 */

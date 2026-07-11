@@ -20,9 +20,7 @@ const postsByTag = computed(() => {
 });
 
 const sortedTags = computed(() =>
-  Object.entries(postsByTag.value).sort(
-    ([, a], [, b]) => b.length - a.length,
-  ),
+  Object.entries(postsByTag.value).sort(([, a], [, b]) => b.length - a.length),
 );
 
 const filteredPosts = computed(() =>
@@ -30,7 +28,6 @@ const filteredPosts = computed(() =>
 );
 
 const tagIcons = computed(() => (theme as any).blog?.tagIcons ?? {});
-const tagsPath = computed(() => (theme as any).blog?.tagsPath ?? "/blog/tags");
 
 function selectTag(tag: string) {
   selectedTag.value = tag;
@@ -41,7 +38,6 @@ function selectTag(tag: string) {
   }
 }
 
-// restore from URL on mount
 if (inBrowser) {
   const init = new URLSearchParams(window.location.search).get("init");
   if (init) selectedTag.value = init;
@@ -70,17 +66,18 @@ if (inBrowser) {
 
     <div v-if="selectedTag && filteredPosts.length" class="bt-posts">
       <h3 class="bt-posts-heading">
-        {{ filteredPosts.length }} 篇 "{{ selectedTag }}" 标签的文章
+        {{ filteredPosts.length }} 篇「{{ selectedTag }}」标签的文章
       </h3>
-      <a
-        v-for="post of filteredPosts"
-        :key="post.url"
-        :href="withBase(post.url)"
-        class="bt-post-link"
-      >
-        <span class="bt-post-date">{{ post.date.formatted }}</span>
-        <span class="bt-post-title">{{ post.title }}</span>
-      </a>
+      <div class="timeline-body">
+        <a
+          v-for="post of filteredPosts"
+          :key="post.url"
+          :href="withBase(post.url)"
+          class="timeline-post"
+        >
+          <span class="timeline-post-title">{{ post.title }}</span>
+        </a>
+      </div>
     </div>
 
     <div v-else-if="selectedTag && filteredPosts.length === 0" class="bt-empty">
@@ -103,18 +100,16 @@ if (inBrowser) {
 
 .bt-header h2 {
   margin: 0 0 8px;
-  font-size: 28px;
+  font-size: 1.8rem;
   font-weight: 700;
-  letter-spacing: 2px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-brand-1);
+  color: var(--keep-text-2);
   border: none;
 }
 
 .bt-header p {
   margin: 0;
   font-size: 15px;
-  color: var(--vp-c-text-2);
+  color: var(--keep-text-4);
 }
 
 .bt-cloud {
@@ -132,29 +127,24 @@ if (inBrowser) {
   padding: 6px 14px;
   font-size: 13px;
   font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-text-2);
-  background: var(--vp-c-bg-soft);
-  border: 1px solid rgba(0, 255, 255, 0.12);
+  color: var(--keep-text-3);
+  background: var(--keep-bg-2);
+  border: 1px solid var(--keep-border);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .bt-tag:hover {
-  color: var(--tp-cyan);
-  border-color: var(--tp-cyan);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.12);
+  color: var(--keep-primary);
+  border-color: var(--keep-primary);
 }
 
 .bt-tag.active {
-  color: #0a0a0a;
-  background: var(--tp-cyan);
-  border-color: var(--tp-cyan);
+  color: #ffffff;
+  background: var(--keep-primary);
+  border-color: var(--keep-primary);
   font-weight: 600;
-}
-
-.dark .bt-tag.active {
-  color: #0a0a0a;
 }
 
 .bt-tag-icon {
@@ -167,53 +157,20 @@ if (inBrowser) {
 }
 
 .bt-posts {
-  border-top: 1px solid var(--vp-c-divider);
+  border-top: 1px solid var(--keep-border);
   padding-top: 24px;
 }
 
 .bt-posts-heading {
   font-size: 16px;
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  color: var(--keep-text-2);
   margin: 0 0 16px;
-}
-
-.bt-post-link {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.bt-post-link:hover {
-  background: rgba(0, 255, 255, 0.05);
-}
-
-.bt-post-date {
-  font-size: 13px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-text-3);
-  min-width: 72px;
-  letter-spacing: 1px;
-}
-
-.bt-post-title {
-  font-size: 15px;
-  color: var(--vp-c-text-1);
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.bt-post-link:hover .bt-post-title {
-  color: var(--tp-cyan);
 }
 
 .bt-empty {
   text-align: center;
   padding: 48px 0;
-  color: var(--vp-c-text-2);
+  color: var(--keep-text-3);
 }
 </style>

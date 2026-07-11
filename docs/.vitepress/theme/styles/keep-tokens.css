@@ -1,0 +1,143 @@
+/* ============================================================
+   Keep Theme Design Tokens
+   —— 由 hexo-theme-keep 的 stylus-variables.styl / css-variables.styl
+      精确翻译而来。Stylus 的 lighten/darken/alpha 已在编译期
+      预计算为十六进制 / rgba 值写死。
+   ============================================================ */
+
+:root {
+  /* ---- 主色（Keep 默认 #0066cc）---- */
+  --keep-primary: #0066cc;
+  --keep-primary-light-1: #1a75d1; /* lighten 10% */
+  --keep-primary-light-2: #4d94db; /* lighten 20% */
+  --keep-primary-dark-1: #005cb8;  /* darken 10% */
+  --keep-primary-dark-2: #0052a3;  /* darken 20% */
+
+  /* ---- 浅色模式 · 背景 ---- */
+  --keep-bg-1: #ffffff;
+  --keep-bg-1-transparent: rgba(255, 255, 255, 0.6);
+  --keep-bg-2: #f7f7f7; /* darken 3% */
+  --keep-bg-3: #f0f0f0; /* darken 6% */
+  --keep-content-bg: #ffffff;
+
+  /* ---- 浅色模式 · 文字（6 级 + badge）---- */
+  --keep-text-1: #40404a; /* darken 10% */
+  --keep-text-2: #484852; /* darken 5% */
+  --keep-text-3: #50505c; /* base */
+  --keep-text-4: #8383a0; /* lighten 30% */
+  --keep-text-5: #c8c8d5; /* lighten 60% */
+  --keep-text-6: #f5f5f8; /* lighten 90% */
+  --keep-text-badge: #ffffff;
+
+  /* ---- 浅色模式 · 边框 / 阴影 / 选中 ---- */
+  --keep-border: #b3b3b3;
+  --keep-selection: #1a75d1;
+  --keep-shadow: rgba(0, 0, 0, 0.16);
+  --keep-shadow-hover: rgba(0, 0, 0, 0.22);
+  --keep-scrollbar: #6d6d78;
+  --keep-scrollbar-bg: #e6e6e6;
+  --keep-post-h-border: rgba(80, 80, 92, 0.15);
+
+  /* ---- 浅色模式 · Header 透明背景 ---- */
+  --keep-header-bg-1: rgba(255, 255, 255, 0.28);
+  --keep-header-bg-2: rgba(255, 255, 255, 0.4);
+
+  /* ---- 浅色模式 · 5 类 Keep Block（对应 Keep info/primary/success/warning/danger）---- */
+  --keep-info: #75757a;
+  --keep-info-bg: rgba(117, 117, 122, 0.1);
+  --keep-info-border: rgba(117, 117, 122, 0.6);
+
+  --keep-block-primary: #0458ab;
+  --keep-block-primary-bg: rgba(4, 88, 171, 0.1);
+  --keep-block-primary-border: rgba(4, 88, 171, 0.6);
+
+  --keep-success: #10b981;
+  --keep-success-bg: rgba(16, 185, 129, 0.1);
+  --keep-success-border: rgba(16, 185, 129, 0.6);
+
+  --keep-warning: #b78d0f;
+  --keep-warning-bg: rgba(183, 141, 15, 0.1);
+  --keep-warning-border: rgba(183, 141, 15, 0.6);
+
+  --keep-danger: #f43f5e;
+  --keep-danger-bg: rgba(244, 63, 94, 0.1);
+  --keep-danger-border: rgba(244, 63, 94, 0.6);
+
+  /* ---- 字号 / 行高 / 字体 ---- */
+  --keep-base-font-size: 15.2px;
+  --keep-base-line-height: 22px;
+  --keep-base-font-weight: 400;
+  --keep-base-font-family: Optima-Regular, Optima, "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  /* ---- 页面尺寸 ---- */
+  --keep-page-width: 80%;
+  --keep-page-width-tablet: 88%;
+  --keep-page-width-mobile: 90%;
+  --keep-page-max-width: 960px;
+  --keep-page-max-width-2: 1152px;
+  --keep-component-gap: 36px;
+
+  /* ---- 圆角 ---- */
+  --keep-radius: 8px;
+
+  /* ---- Header ---- */
+  --keep-header-height: 70px;
+  --keep-header-shrink-height: 50.4px;
+  --keep-header-blur: 4px;
+  --keep-header-progress-height: 2px;
+  --keep-header-title-font-size: 1.8rem;
+
+  /* ---- Home / Post 相关 ---- */
+  --keep-home-post-hover-scale: 1;
+  --keep-post-title-align: left;
+}
+
+/* ==============================================================
+   暗色模式（VitePress 使用 .dark 类，非 Keep 原生的 .dark-mode）
+   ============================================================== */
+.dark {
+  /* ---- 主色深色变体 ---- */
+  --keep-primary: #268bef; /* Keep 暗色下的品牌色实际用值 */
+
+  /* ---- 背景 ---- */
+  --keep-bg-1: #22272e;
+  --keep-bg-1-transparent: rgba(34, 39, 46, 0.6);
+  --keep-bg-2: #2a2f37; /* lighten 4% */
+  --keep-bg-3: #333944; /* lighten 8% */
+  --keep-content-bg: #1e232a; /* darken 2% */
+
+  /* ---- 文字 ---- */
+  --keep-text-1: #c8d0d8; /* lighten 12% */
+  --keep-text-2: #b9c4ce; /* lighten 6% */
+  --keep-text-3: #adbac5; /* base */
+  --keep-text-4: #6b787f; /* darken 30% */
+  --keep-text-5: #4a5459; /* darken 50% */
+  --keep-text-6: #2d3237; /* darken 70% */
+  --keep-text-badge: #dddddd;
+
+  /* ---- 边框 / 阴影 ---- */
+  --keep-border: #4a5058;
+  --keep-selection: #0c4d8f;
+  --keep-shadow: rgba(120, 120, 120, 0.18);
+  --keep-shadow-hover: rgba(120, 120, 120, 0.24);
+  --keep-scrollbar: #4a5058;
+  --keep-scrollbar-bg: #1a1e24;
+  --keep-post-h-border: rgba(173, 186, 197, 0.15);
+
+  --keep-header-bg-1: rgba(34, 39, 46, 0.28);
+  --keep-header-bg-2: rgba(34, 39, 46, 0.4);
+
+  /* ---- 5 类 Block 暗色 ---- */
+  --keep-info: #9999a2;
+  --keep-info-bg: rgba(153, 153, 162, 0.1);
+  --keep-info-border: rgba(153, 153, 162, 0.5);
+
+  --keep-block-primary: #268bef;
+  --keep-block-primary-bg: rgba(38, 139, 239, 0.1);
+  --keep-block-primary-border: rgba(38, 139, 239, 0.6);
+
+  --keep-warning: #ecc34d;
+  --keep-warning-bg: rgba(236, 195, 77, 0.1);
+  --keep-warning-border: rgba(236, 195, 77, 0.6);
+  /* success / danger 浅色与暗色共用同一组值，无需重复覆盖 */
+}

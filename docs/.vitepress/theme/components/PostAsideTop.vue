@@ -61,9 +61,9 @@ const categoryLabel = computed(() => {
   padding: 4px 12px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--tp-cyan);
-  background: rgba(0, 255, 255, 0.08);
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  color: #ffffff;
+  background: var(--keep-primary);
+  border: 1px solid var(--keep-primary);
   border-radius: 9999px;
 }
 
@@ -85,8 +85,8 @@ const categoryLabel = computed(() => {
 }
 
 .pat-tag:hover {
-  color: var(--tp-cyan);
-  border-color: rgba(0, 255, 255, 0.3);
+  color: var(--keep-primary);
+  border-color: var(--keep-primary);
 }
 
 .pat-tag-icon {

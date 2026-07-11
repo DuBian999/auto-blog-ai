@@ -1,113 +1,126 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted, shallowRef } from "vue";
 import { usePosts } from "../composables/usePosts";
-import { useData, useRoute, withBase } from "vitepress";
+import { withBase } from "vitepress";
+import KeepPaginator from "./KeepPaginator.vue";
 
 const { posts } = usePosts();
-const { theme } = useData();
-const route = useRoute();
 
 const PAGE_SIZE = 10;
+// 与 CategoryPosts 保持一致：以空字符串初始化，客户端挂载后同步 URL query，避免 hydration mismatch
+const currentSearch = shallowRef("");
 
-const currentPage = computed(() => {
-  const p = parseInt((route as any).query?.page, 10);
+const requestedPage = computed(() => {
+  const p = parseInt(
+    new URLSearchParams(currentSearch.value).get("page") || "",
+    10,
+  );
   return p > 0 ? p : 1;
 });
 
 const totalPages = computed(() => Math.ceil(posts.length / PAGE_SIZE));
+
+const currentPage = computed(() =>
+  Math.min(requestedPage.value, Math.max(totalPages.value, 1)),
+);
 
 const pagedPosts = computed(() => {
   const start = (currentPage.value - 1) * PAGE_SIZE;
   return posts.slice(start, start + PAGE_SIZE);
 });
 
-const pageUrl = (page: number) => {
-  const q = new URLSearchParams((route as any).query ?? {});
+function goPage(page: number) {
+  if (typeof window === "undefined") return;
+  const q = new URLSearchParams(currentSearch.value);
   if (page <= 1) {
     q.delete("page");
   } else {
     q.set("page", String(page));
   }
   const qs = q.toString();
-  return withBase(route.path + (qs ? "?" + qs : ""));
-};
+  const url = new URL(window.location.href);
+  url.search = qs;
+  window.history.pushState({}, "", url);
+  currentSearch.value = url.search;
+  window.scrollTo(0, 0);
+}
 
-const visiblePages = computed(() => {
-  const pages = [];
-  const total = totalPages.value;
-  const current = currentPage.value;
-  let start = Math.max(1, current - 2);
-  let end = Math.min(total, current + 2);
-  if (end - start < 4) {
-    if (start === 1) end = Math.min(total, start + 4);
-    else start = Math.max(1, end - 4);
-  }
-  for (let i = start; i <= end; i++) pages.push(i);
-  return pages;
+function syncSearchFromURL() {
+  currentSearch.value = window.location.search;
+}
+
+onMounted(() => {
+  syncSearchFromURL();
+  window.addEventListener("popstate", syncSearchFromURL);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", syncSearchFromURL);
 });
 
 const categoryLabel = (cat: string) => {
-  const map: Record<string, string> = { frontend: "前端", movies: "电影", "ai-news": "AI" };
+  const map: Record<string, string> = {
+    frontend: "前端",
+    movies: "电影",
+    "ai-news": "AI",
+  };
   return map[cat?.toLowerCase()] ?? cat;
 };
 
-const categoryBadgeClass = (cat: string) => {
-  const map: Record<string, string> = { frontend: "cat-frontend", movies: "cat-movies", "ai-news": "cat-ai" };
-  return map[cat?.toLowerCase()] ?? "";
+const categoryIcon = (cat: string): string => {
+  const c = cat?.toLowerCase();
+  if (c === "frontend") {
+    return `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`;
+  }
+  if (c === "ai-news") {
+    return `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>`;
+  }
+  return `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
 };
 
 const stripHtml = (html: string | undefined) => {
   return html?.replace(/<[^>]*>/g, "") ?? "";
 };
+
+const categoryKey = (cat: string) => {
+  const c = cat?.toLowerCase();
+  return ["frontend", "ai-news", "movies"].includes(c) ? c : "default";
+};
 </script>
 
 <template>
-  <div class="blog-home">
-    <header class="blog-home-header">
-      <h2>{{ theme.blog?.title ?? "博客" }}</h2>
-      <p>{{ theme.blog?.description }}</p>
-    </header>
-
+  <div id="content" class="blog-home">
     <div class="blog-home-list">
       <a
         v-for="post of pagedPosts"
         :key="post.url"
         :href="withBase(post.url)"
-        class="blog-home-card"
+        class="home-post-item"
       >
-        <span class="bh-date">{{ post.date.formatted }}</span>
-        <span :class="['bh-category', categoryBadgeClass(post.category)]">
-          {{ categoryLabel(post.category) }}
-        </span>
-        <h3 class="bh-title">{{ post.title }}</h3>
-        <p class="bh-excerpt">{{ stripHtml(post.excerpt) }}</p>
+        <div :class="['home-post-item-top', 'cat-cover', categoryKey(post.category)]">
+          <span class="cat-icon" v-html="categoryIcon(post.category)" />
+        </div>
+        <div class="home-post-item-bottom">
+          <h3 class="home-post-title">{{ post.title }}</h3>
+          <p class="home-post-excerpt">{{ stripHtml(post.excerpt) }}</p>
+          <div class="home-post-meta">
+            <span class="meta-date">{{ post.date.formatted }}</span>
+            <span :class="['meta-category', 'cat-badge-' + categoryKey(post.category)]">
+              {{ categoryLabel(post.category) }}
+            </span>
+          </div>
+        </div>
       </a>
     </div>
 
     <div v-if="posts.length === 0" class="bh-empty">暂无文章</div>
 
-    <nav v-if="totalPages > 1" class="bh-pagination">
-      <a
-        v-if="currentPage > 1"
-        :href="pageUrl(currentPage - 1)"
-        class="bh-page-btn"
-      >← 上一页</a>
-      <span v-else class="bh-page-btn disabled">← 上一页</span>
-
-      <a
-        v-for="p of visiblePages"
-        :key="p"
-        :href="pageUrl(p)"
-        :class="['bh-page-num', { active: p === currentPage }]"
-      >{{ p }}</a>
-
-      <a
-        v-if="currentPage < totalPages"
-        :href="pageUrl(currentPage + 1)"
-        class="bh-page-btn"
-      >下一页 →</a>
-      <span v-else class="bh-page-btn disabled">下一页 →</span>
-    </nav>
+    <KeepPaginator
+      v-if="totalPages > 1"
+      :current="currentPage"
+      :total="totalPages"
+      @change="goPage"
+    />
   </div>
 </template>
 
@@ -115,188 +128,146 @@ const stripHtml = (html: string | undefined) => {
 .blog-home {
   max-width: 960px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
-}
-
-.blog-home-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.blog-home-header h2 {
-  margin: 0 0 8px;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-brand-1);
-  border: none;
-}
-
-.blog-home-header p {
-  margin: 0;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
+  padding: 40px 24px 120px;
 }
 
 .blog-home-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.blog-home-card {
   display: flex;
   flex-direction: column;
-  padding: 20px 24px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid rgba(0, 255, 255, 0.08);
-  border-left: 3px solid rgba(0, 255, 255, 0.25);
-  border-radius: 0 8px 8px 0;
+  gap: 24px;
+}
+
+.home-post-item {
+  display: block;
+  background: var(--keep-content-bg);
+  border-radius: var(--keep-radius);
+  overflow: hidden;
   text-decoration: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  color: inherit;
+  box-shadow: 0 0 8px var(--keep-shadow);
+  transition: box-shadow 0.3s ease;
 }
 
-.blog-home-card:hover {
-  border-color: rgba(0, 255, 255, 0.4);
-  border-left-color: var(--tp-cyan);
-  box-shadow:
-    0 0 20px rgba(0, 255, 255, 0.08),
-    inset 0 0 20px rgba(0, 255, 255, 0.03);
-  transform: translateX(4px);
+.home-post-item:hover {
+  box-shadow: 0 0 12px var(--keep-shadow-hover);
 }
 
-.bh-date {
-  font-size: 12px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-text-3);
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  transition: color 0.25s ease;
-}
-
-.blog-home-card:hover .bh-date {
-  color: var(--tp-cyan);
-}
-
-.bh-category {
-  display: inline-flex;
+.home-post-item-top {
+  width: 100%;
+  height: 10rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
   align-items: center;
-  width: fit-content;
-  padding: 2px 10px;
-  font-size: 11px;
+  justify-content: center;
+}
+
+.cat-cover.frontend {
+  background: linear-gradient(135deg, #0066cc 0%, #4d94db 100%);
+}
+
+.cat-cover.ai-news {
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+}
+
+.cat-cover.movies {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.cat-cover.default {
+  background: linear-gradient(135deg, #75757a 0%, #a0a0a8 100%);
+}
+
+.cat-icon {
+  color: rgba(255, 255, 255, 0.9);
+  display: inline-flex;
+  transition: transform 0.35s ease;
+}
+
+.home-post-item:hover .cat-icon {
+  transform: scale(1.03);
+}
+
+.home-post-item-bottom {
+  padding: 2rem;
+}
+
+.home-post-title {
+  margin: 0 0 1rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  border-radius: 9999px;
-  font-family: var(--vp-font-family-mono);
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
+  color: var(--keep-text-2);
+  line-height: 1.5;
+  border: none;
 }
 
-.cat-frontend {
-  color: var(--tp-cyan);
-  background: rgba(0, 255, 255, 0.08);
-  border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-.cat-movies {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-.cat-ai {
-  color: var(--tp-purple);
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-.bh-title {
-  margin: 0 0 8px;
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-  line-height: 1.4;
-  transition: color 0.25s ease;
-}
-
-.blog-home-card:hover .bh-title {
-  color: var(--tp-cyan);
-}
-
-.bh-excerpt {
-  margin: 0;
-  font-size: 13px;
-  color: var(--vp-c-text-2);
-  line-height: 1.6;
+.home-post-excerpt {
+  margin: 0 0 1.5rem;
+  font-size: 15px;
+  color: var(--keep-text-3);
+  line-height: 1.7;
+  text-align: justify;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.home-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--keep-text-4);
+}
+
+.meta-date {
+  font-family: var(--vp-font-family-mono);
+  letter-spacing: 0.5px;
+}
+
+.meta-category {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.cat-badge-frontend {
+  background: var(--keep-primary);
+}
+
+.cat-badge-ai-news {
+  background: #7c3aed;
+}
+
+.cat-badge-movies {
+  background: #f59e0b;
+}
+
+.cat-badge-default {
+  background: var(--keep-info);
 }
 
 .bh-empty {
   text-align: center;
   padding: 64px 0;
-  color: var(--vp-c-text-2);
-}
-
-/* ---- 分页 ---- */
-.bh-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  margin-top: 40px;
-}
-
-.bh-page-btn,
-.bh-page-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0 14px;
-  font-size: 13px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  border: 1px solid rgba(0, 255, 255, 0.12);
-  border-radius: 6px;
-  background: var(--vp-c-bg-soft);
-  transition: all 0.2s ease;
-}
-
-.bh-page-num {
-  width: 36px;
-  padding: 0;
-}
-
-.bh-page-btn:hover,
-.bh-page-num:hover {
-  color: var(--tp-cyan);
-  border-color: var(--tp-cyan);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
-}
-
-.bh-page-num.active {
-  color: #0a0a0a;
-  background: var(--tp-cyan);
-  border-color: var(--tp-cyan);
-  font-weight: 600;
-}
-
-.dark .bh-page-num.active {
-  color: #0a0a0a;
-}
-
-.bh-page-btn.disabled {
-  opacity: 0.35;
-  pointer-events: none;
+  color: var(--keep-text-3);
 }
 
 @media (max-width: 640px) {
-  .blog-home-list {
-    grid-template-columns: 1fr;
+  .home-post-item-bottom {
+    padding: 1.4rem;
+  }
+  .home-post-title {
+    font-size: 1.2rem;
+  }
+  .home-post-item-top {
+    height: 8rem;
   }
 }
 </style>

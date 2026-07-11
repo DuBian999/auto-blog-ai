@@ -1,0 +1,78 @@
+/* ============================================================
+   Keep Tokens → VitePress 原生变量映射
+   —— 通过覆盖 --vp-c-brand-* / --vp-c-bg* / --vp-c-text-* 等
+      VitePress 官方变量，让默认组件（导航、按钮、hero、代码块、
+      徽标、侧边栏等）自动吃到 Keep 配色，无需改组件。
+   ============================================================ */
+
+:root {
+  /* ---- 品牌色 ---- */
+  --vp-c-brand: var(--keep-primary);
+  --vp-c-brand-1: var(--keep-primary);
+  --vp-c-brand-2: var(--keep-primary-light-1);
+  --vp-c-brand-3: var(--keep-primary-light-2);
+  --vp-c-brand-soft: rgba(0, 102, 204, 0.08);
+  --vp-c-brand-light: var(--keep-primary-light-1);
+  --vp-c-brand-dark: var(--keep-primary-dark-1);
+
+  /* ---- 背景 ---- */
+  --vp-c-bg: var(--keep-bg-1);
+  --vp-c-bg-alt: var(--keep-bg-2);
+  --vp-c-bg-soft: var(--keep-bg-3);
+  --vp-c-bg-mute: var(--keep-bg-3);
+
+  /* ---- 文字 ---- */
+  --vp-c-text-1: var(--keep-text-1);
+  --vp-c-text-2: var(--keep-text-3);
+  --vp-c-text-3: var(--keep-text-4);
+
+  /* ---- 边框 / 分隔 ---- */
+  --vp-c-border: var(--keep-border);
+  --vp-c-divider: var(--keep-text-6);
+  --vp-c-gutter: var(--keep-bg-2);
+
+  /* ---- 品牌按钮 ---- */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-bg: var(--keep-primary);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: #fff;
+  --vp-button-brand-hover-bg: var(--keep-primary-light-1);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: #fff;
+  --vp-button-brand-active-bg: var(--keep-primary-dark-1);
+
+  /* ---- Hero 名称（取消原霓虹青紫渐变，改为 Keep 蓝纯色）---- */
+  --vp-home-hero-name-color: var(--keep-primary);
+  --vp-home-hero-name-background: initial;
+  --vp-home-hero-image-background-image: none;
+  --vp-home-hero-image-filter: none;
+
+  /* ---- 字体 / 字号 ---- */
+  --vp-font-family-base: var(--keep-base-font-family);
+  font-size: var(--keep-base-font-size);
+}
+
+.dark {
+  --vp-c-brand-soft: rgba(38, 139, 239, 0.1);
+
+  --vp-c-bg: var(--keep-bg-1);
+  --vp-c-bg-alt: var(--keep-content-bg);
+  --vp-c-bg-soft: var(--keep-bg-2);
+  --vp-c-bg-mute: var(--keep-bg-3);
+
+  --vp-c-border: var(--keep-border);
+  --vp-c-divider: rgba(173, 186, 197, 0.1);
+  --vp-c-gutter: #1a1e24;
+
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-bg: var(--keep-primary);
+  --vp-button-brand-hover-bg: #4aa0f5;
+  --vp-button-brand-active-bg: #1a7bd8;
+}
+
+/* ---- 选中文本 ---- */
+::selection {
+  background: var(--keep-selection);
+  color: #fff;
+}

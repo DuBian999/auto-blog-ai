@@ -26,7 +26,6 @@ const blogPath = (theme as any).blog?.path ?? "/blog/";
 }
 
 .author-aside-bottom a:hover {
-  color: var(--tp-cyan);
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+  color: var(--keep-primary-dark-1);
 }
 </style>

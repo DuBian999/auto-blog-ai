@@ -31,7 +31,7 @@ const { frontmatter } = useData();
   border-radius: 50%;
   margin: 0 auto 16px;
   display: block;
-  border: 2px solid rgba(0, 255, 255, 0.2);
+  border: 2px solid var(--keep-border);
 }
 
 .ah-name {

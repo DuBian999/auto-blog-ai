@@ -1,16 +1,20 @@
 /* ============================================
-   BLEACH-X - 自定义覆盖样式
+   BLEACH-X · VitePress 组件覆盖（Keep 蓝配色）
+   —— 品牌色/字号/背景变量在 keep-tokens/keep-base，
+      本文件只处理需要覆盖 VitePress 内置 CSS 类的场景。
    ============================================ */
 
 /* ---- 导航栏 ---- */
-.VPNav {
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+/* 注意：backdrop-filter 必须放在 .VPNavBar 上，放在 .VPNav 上会创建
+   containing block 导致移动端 hamburger 弹出的 fixed 菜单无法定位 */
+.VPNavBar {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.dark .VPNav {
-  background: rgba(10, 10, 20, 0.85) !important;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.06);
+.dark .VPNavBar {
+  background: rgba(34, 39, 46, 0.9);
+  border-bottom: 1px solid var(--keep-border);
 }
 
 .VPNav .title {
@@ -19,7 +23,7 @@
 
 /* ---- 侧边栏 ---- */
 .dark .VPSidebar {
-  border-right: 1px solid rgba(0, 255, 255, 0.04);
+  border-right: 1px solid var(--keep-border);
 }
 
 /* -- 文章页左侧边栏：固定高度 + 内部滚动，导航始终可触达 -- */
@@ -38,7 +42,7 @@
   flex: 1 1 auto;
   min-height: 0;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 255, 0.12) transparent;
+  scrollbar-color: rgba(0, 102, 204, 0.2) transparent;
 }
 
 /* 导航始终固定在侧边栏底部 */
@@ -52,13 +56,13 @@
 }
 
 .dark .aside-post-nav {
-  background: var(--vp-sidebar-bg-color);
+  background: var(--vp-c-bg);
 }
 
 /* -- 侧边栏：本页目录 (TOC) -- */
 .VPDocAsideOutline {
   padding: 16px;
-  border: 1px solid rgba(0, 255, 255, 0.12);
+  border: 1px solid var(--keep-border);
   border-radius: 8px;
   margin-top: 24px;
   margin-bottom: 20px;
@@ -68,7 +72,7 @@
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: var(--tp-cyan);
+  color: var(--keep-primary);
   margin-bottom: 12px;
 }
 
@@ -85,34 +89,34 @@
   font-size: 13px;
   line-height: 1.5;
   color: var(--vp-c-text-2);
-  padding: 5px 0 5px 0;
+  padding: 5px 0;
   margin: 1px 0;
   border: none;
   transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
 .VPDocAsideOutline .outline-link:hover {
-  color: var(--tp-cyan);
+  color: var(--keep-primary);
   padding-left: 8px;
 }
 
 .VPDocAsideOutline .outline-link.active {
-  color: var(--tp-cyan);
+  color: var(--keep-primary);
   font-weight: 600;
 }
 
 .dark .VPDocAsideOutline {
-  border-color: rgba(0, 255, 255, 0.08);
-  background: rgba(0, 255, 255, 0.02);
+  border-color: var(--keep-border);
+  background: rgba(38, 139, 239, 0.03);
 }
 
-/* -- 侧边栏：文章分类/标签/作者区域 -- */
+/* -- 侧边栏：文章分类/标签/作者区域（Tailwind 类兜底覆盖）-- */
 .VPDocAside .bg-primary-100 {
   background: transparent !important;
 }
 
 .VPDocAside .bg-gray-100 {
-  background: rgba(0, 255, 255, 0.05) !important;
+  background: var(--keep-bg-2) !important;
 }
 
 .VPDocAside .text-gray-600 {
@@ -121,7 +125,7 @@
 
 /* 侧边栏标签链接 hover */
 .VPDocAside a[href*="?init="] {
-  border: 1px solid rgba(0, 255, 255, 0.15);
+  border: 1px solid var(--keep-border);
   border-radius: 4px;
   padding: 2px 8px;
   font-size: 11px;
@@ -132,13 +136,11 @@
 }
 
 .VPDocAside a[href*="?init="]:hover {
-  border-color: var(--tp-cyan);
-  color: var(--tp-cyan);
-  background: rgba(0, 255, 255, 0.06);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+  border-color: var(--keep-primary);
+  color: var(--keep-primary);
+  background: rgba(0, 102, 204, 0.06);
 }
 
-/* 侧边栏作者区域 */
 .VPDocAside .flex.items-center.space-x-2 {
   padding: 8px 0;
 }
@@ -148,31 +150,18 @@
 }
 
 .VPDocAside .text-gray-900 a:hover {
-  color: var(--tp-cyan) !important;
+  color: var(--keep-primary) !important;
 }
 
-/* 侧边栏分隔线 */
 .VPDocAside .border-gray-200 {
-  border-color: rgba(0, 255, 255, 0.08) !important;
+  border-color: var(--keep-border) !important;
 }
 
 .VPDocAside .divide-gray-200 > * {
-  border-color: rgba(0, 255, 255, 0.06) !important;
+  border-color: var(--keep-border) !important;
 }
 
-/* ---- 链接样式 ---- */
-.vp-doc a {
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.vp-doc a:hover {
-  color: var(--vp-c-brand-1);
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-}
-
-/* ---- Hero 区域增强 ---- */
+/* ---- Hero 区域字体（首页已被 KeepBanner 顶替，仅其他页面 hero 保留）---- */
 .VPHero .name {
   font-family: var(--vp-font-family-mono);
   letter-spacing: 2px;
@@ -180,7 +169,7 @@
 
 /* ---- 代码块 ---- */
 .vp-doc div[class*="language-"] {
-  border: 1px solid rgba(0, 255, 255, 0.08);
+  border: 1px solid var(--keep-border);
   border-radius: 8px;
 }
 
@@ -190,24 +179,24 @@
 }
 
 .vp-doc .custom-block.tip {
-  border-color: var(--tp-cyan);
-  background: rgba(0, 255, 255, 0.04);
+  border-color: var(--keep-primary);
+  background: rgba(0, 102, 204, 0.06);
 }
 
 .vp-doc .custom-block.warning {
   border-color: #f59e0b;
-  background: rgba(245, 158, 11, 0.04);
+  background: rgba(245, 158, 11, 0.06);
 }
 
 .vp-doc .custom-block.danger {
   border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.04);
+  background: rgba(239, 68, 68, 0.06);
 }
 
 /* ---- 页脚 ---- */
 .dark .VPFooter {
-  background: rgba(10, 10, 20, 0.9) !important;
-  border-top: 1px solid rgba(0, 255, 255, 0.06);
+  background: rgba(34, 39, 46, 0.95) !important;
+  border-top: 1px solid var(--keep-border);
 }
 
 /* ---- 滚动条美化 ---- */
@@ -221,55 +210,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 255, 0.15);
+  background: rgba(0, 102, 204, 0.22);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 255, 0.3);
-}
-
-/* ---- 文章卡片网格布局 ---- */
-.post-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
-  margin-top: 24px;
-}
-
-/* ---- 分类徽标 ---- */
-.category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 9999px;
-  letter-spacing: 0.5px;
-  font-family: var(--vp-font-family-mono);
-}
-
-.category-badge.frontend {
-  color: var(--tp-cyan);
-  background: rgba(0, 255, 255, 0.08);
-  border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-.category-badge.movies {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-.category-badge.ai-news {
-  color: var(--tp-purple);
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-/* ---- 选择文本高亮 ---- */
-::selection {
-  background: rgba(0, 255, 255, 0.25);
-  color: #fff;
+  background: rgba(0, 102, 204, 0.4);
 }

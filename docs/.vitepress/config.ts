@@ -12,6 +12,8 @@ export default defineConfigWithTheme<ThemeConfig>({
   lang: "zh-CN",
   base: "/auto-blog-ai/",
 
+  srcExclude: ["planning/**"],
+
   // TailwindCSS v4 Vite 插件
   vite: {
     plugins: [tailwindcss()],

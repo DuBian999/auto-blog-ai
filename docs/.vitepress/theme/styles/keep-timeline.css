@@ -1,0 +1,119 @@
+/* ============================================================
+   Keep Timeline · 共享样式
+   —— 供 BlogArchives / CategoryPosts / BlogTags 直接以 class
+      引用，复刻 hexo-theme-keep archive-list.styl 的时间线：
+      年份大标题 + 虚线竖线 + 圆点 marker + hover 放大。
+   ============================================================ */
+
+.keep-timeline {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 120px;
+}
+
+.timeline-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.timeline-header h2 {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--keep-text-2);
+  border: none;
+}
+
+.timeline-header p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--keep-text-4);
+}
+
+.timeline-year {
+  margin-bottom: 36px;
+}
+
+.timeline-year:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-year-heading {
+  margin: 0 0 0.8rem;
+  color: var(--keep-text-2);
+  font-weight: 600;
+  font-size: 1.6rem;
+  border: none;
+}
+
+.timeline-body {
+  padding-left: 1.2rem;
+}
+
+.timeline-post {
+  position: relative;
+  display: block;
+  padding: 0.96rem 0 0.96rem 1.92rem;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.timeline-post::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  border-left: 1px dashed var(--keep-text-5);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-post::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--keep-text-5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.timeline-post:hover::before {
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--keep-text-4);
+}
+
+.timeline-post-title {
+  display: block;
+  color: var(--keep-text-3);
+  transition: color 0.2s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-post:hover .timeline-post-title {
+  color: var(--keep-primary);
+}
+
+.timeline-empty {
+  text-align: center;
+  padding: 64px 0;
+  color: var(--keep-text-3);
+}
+
+@media (max-width: 640px) {
+  .timeline-post {
+    padding-left: 1.6rem;
+  }
+  .timeline-year-heading {
+    font-size: 1.35rem;
+  }
+}

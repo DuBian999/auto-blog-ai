@@ -58,7 +58,7 @@ const blogPath =theme.blog?.path ?? "/blog/";
 }
 
 .aside-post-link a:hover {
-  color: var(--tp-cyan);
+  color: var(--keep-primary);
 }
 
 .aside-post-back {
@@ -75,7 +75,6 @@ const blogPath =theme.blog?.path ?? "/blog/";
 }
 
 .aside-post-back a:hover {
-  color: var(--tp-cyan);
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+  color: var(--keep-primary-dark-1);
 }
 </style>

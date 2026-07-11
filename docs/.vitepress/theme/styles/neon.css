@@ -1,12 +1,13 @@
 /* ============================================
-   BLEACH-X - 霓虹科技风主题变量与特效
+   BLEACH-X · 霓虹残余 utility 类
+   ----------------------------------------------
+   品牌色 / 背景 / 按钮 / hero 等 VitePress 变量已迁至
+     keep-tokens.css + keep-base.css。
+   本文件仅保留 --tp-* 色板与独立 utility class，
+   供仍在使用它们的组件继续工作，阶段 2 起逐段清理。
    ============================================ */
 
-/* ==========================================
-   浅色模式（及公共令牌）
-   ========================================== */
 :root {
-  /* ---- 色板 ---- */
   --tp-cyan: #0e7490;
   --tp-purple: #7c3aed;
   --tp-magenta: #c026d3;
@@ -17,112 +18,18 @@
   --tp-card-border: rgba(0, 255, 255, 0.12);
   --tp-glow-cyan: 0 0 15px rgba(0, 255, 255, 0.3);
   --tp-glow-purple: 0 0 15px rgba(139, 92, 246, 0.3);
-
-  /* ---- 博客主题品牌色 ---- */
-  --vp-c-brand: #0e7490;
-  --vp-c-brand-light: #0e7490;
-  --vp-c-brand-dark: #0891b2;
-
-  /* ---- VitePress 新版品牌色 ---- */
-  --vp-c-brand-1: #0e7490;
-  --vp-c-brand-2: #7c3aed;
-  --vp-c-brand-3: #c026d3;
-  --vp-c-brand-soft: rgba(14, 116, 144, 0.08);
-
-  /* ---- 文本（博客主题用）---- */
-  --vp-c-text-light-1: rgba(60, 60, 67, 0.78);
-
-  /* ---- Home hero ---- */
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(
-    135deg,
-    #0891b2,
-    var(--tp-purple),
-    var(--tp-magenta)
-  );
-  --vp-home-hero-image-background-image: linear-gradient(
-    135deg,
-    rgba(8, 145, 178, 0.12),
-    rgba(139, 92, 246, 0.12)
-  );
-  --vp-home-hero-image-filter: blur(44px);
-
-  /* ---- 品牌按钮 ---- */
-  --vp-button-brand-border: transparent;
-  --vp-button-brand-text: #fff;
-  --vp-button-brand-bg: #0e7490;
-  --vp-button-brand-hover-border: transparent;
-  --vp-button-brand-hover-text: #fff;
-  --vp-button-brand-hover-bg: #0891b2;
-  --vp-button-brand-active-border: transparent;
-  --vp-button-brand-active-text: #fff;
-  --vp-button-brand-active-bg: #155e75;
 }
 
-/* ==========================================
-   暗色模式
-   ========================================== */
 .dark {
-  /* ---- 色板 ---- */
   --tp-cyan: #00ffff;
   --tp-purple: #a78bfa;
   --tp-magenta: #e879f9;
-
-  /* ---- 博客主题品牌色 ---- */
-  --vp-c-brand: #00ffff;
-  --vp-c-brand-light: #22d3ee;
-  --vp-c-brand-dark: #00ffff;
-
-  /* ---- VitePress 新版品牌色 ---- */
-  --vp-c-brand-1: #00ffff;
-  --vp-c-brand-2: #a78bfa;
-  --vp-c-brand-3: #e879f9;
-  --vp-c-brand-soft: rgba(0, 255, 255, 0.1);
-
-  /* ---- 背景 ---- */
-  --vp-c-bg: var(--tp-dark);
-  --vp-c-bg-soft: #111122;
-  --vp-c-bg-mute: #1a1a2e;
-  --vp-c-bg-alt: #0d0d1a;
-
-  /* ---- 边框与分割线 ---- */
-  --vp-c-border: rgba(0, 255, 255, 0.08);
-  --vp-c-divider: rgba(0, 255, 255, 0.06);
-  --vp-c-gutter: #0a0a14;
-
-  /* ---- 文本 ---- */
-  --vp-c-text-1: rgba(255, 255, 255, 0.92);
-  --vp-c-text-2: rgba(255, 255, 255, 0.6);
-  --vp-c-text-3: rgba(255, 255, 255, 0.38);
-
-  /* ---- 文本（博客主题用）---- */
-  --vp-c-text-dark-1: rgba(255, 255, 255, 0.78);
-
-  /* ---- 代码 ---- */
-  --vp-code-bg: #0d0d1a;
-  --vp-code-line-highlight-color: rgba(0, 255, 255, 0.06);
-
-  /* ---- 徽标 ---- */
-  --vp-badge-info-text: var(--tp-cyan);
-  --vp-badge-info-bg: rgba(0, 255, 255, 0.1);
-
-  /* ---- 侧边栏 ---- */
-  --vp-sidebar-bg-color: rgba(10, 10, 20, 0.95);
-
-  /* ---- 品牌按钮 ---- */
-  --vp-button-brand-text: #0a0a0a;
-  --vp-button-brand-bg: #00ffff;
-  --vp-button-brand-hover-text: #0a0a0a;
-  --vp-button-brand-hover-bg: rgba(0, 255, 255, 0.85);
-  --vp-button-brand-active-text: #0a0a0a;
-  --vp-button-brand-active-bg: rgba(0, 255, 255, 0.7);
 }
 
 /* ==========================================
-   霓虹特效（模式无关）
+   霓虹特效 utility 类
    ========================================== */
 
-/* ---- 霓虹发光 ---- */
 .neon-glow {
   text-shadow:
     0 0 7px var(--tp-cyan),
@@ -137,7 +44,6 @@
     0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* ---- 毛玻璃卡片 ---- */
 .glass-card {
   background: var(--tp-card);
   backdrop-filter: blur(12px);
@@ -154,7 +60,6 @@
   transform: translateY(-2px);
 }
 
-/* ---- 渐变文字 ---- */
 .gradient-text {
   background: linear-gradient(
     135deg,
@@ -167,7 +72,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* ---- 脉冲边框 ---- */
 @keyframes pulse-border {
   0%,
   100% {
@@ -184,7 +88,6 @@
   animation: pulse-border 3s ease-in-out infinite;
 }
 
-/* ---- 霓虹分割线 ---- */
 .neon-divider {
   height: 1px;
   background: linear-gradient(
@@ -199,7 +102,6 @@
   margin: 2rem 0;
 }
 
-/* ---- 科技风标签 ---- */
 .tech-tag {
   display: inline-block;
   padding: 2px 10px;
@@ -217,7 +119,6 @@
   box-shadow: var(--tp-glow-cyan);
 }
 
-/* ---- 扫描线效果 ---- */
 .scanlines::after {
   content: "";
   position: absolute;

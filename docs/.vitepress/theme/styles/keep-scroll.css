@@ -1,0 +1,20 @@
+/* ============================================================
+   Keep Header 滚动缩放
+   —— body.header-shrink 由 Layout.vue 的 scroll 监听切换
+   ============================================================ */
+
+.VPNavBar {
+  transition: height 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+}
+
+body.header-shrink {
+  --vp-nav-height: 48px !important;
+}
+
+body.header-shrink .VPNavBar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.dark body.header-shrink .VPNavBar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
