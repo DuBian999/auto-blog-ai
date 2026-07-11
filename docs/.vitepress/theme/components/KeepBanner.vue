@@ -319,6 +319,7 @@ const scrollDown = () => {
 }
 
 @media (max-width: 640px) {
+  .keep-banner { padding-bottom: 96px; }
   .banner-desc {
     font-size: 1.4rem;
     min-height: 5rem;
@@ -329,7 +330,17 @@ const scrollDown = () => {
   .hud-tl, .hud-bl { left: 14px; }
   .hud-tr, .hud-br { right: 14px; }
   .hud-meta { display: none; }
-  .hud-wave { bottom: 80px; height: 32px; }
+  .hud-wave { bottom: 56px; height: 28px; }
+  .scroll-hint { bottom: 20px; }
+}
+
+/* 短视口保护（如横屏手机）：与小屏使用同一套安全区 */
+@media (max-height: 520px) {
+  .keep-banner { padding-bottom: 88px; }
+  .banner-desc { font-size: 1.3rem; min-height: auto; line-height: 1.6; }
+  .hud-wave { bottom: 52px; height: 26px; }
+  .scroll-hint { bottom: 16px; padding: 4px; }
+  .scroll-hint svg { width: 22px; height: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
